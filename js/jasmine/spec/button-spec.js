@@ -15,9 +15,8 @@ describe("Button", function() {
 
   beforeEach(function() {
     createButton();
-    var numberOfGroups = 4;
-    buttonAction       = new ButtonAction(new Splitter(numberOfGroups), new Displayer(numberOfGroups));
-    buttonWrapper      = new Button("split", buttonAction);
+    buttonAction  = { act: function(inputId, outputId) {} };
+    buttonWrapper = new Button("split", buttonAction);
   });
 
   afterEach(function() {
@@ -27,15 +26,14 @@ describe("Button", function() {
   it("doesn't do anything if button is not initialized", function() {
     spyOn(buttonAction, "act");
     button.click();
-  	expect(buttonAction.act).not.toHaveBeenCalled();
+    expect(buttonAction.act).not.toHaveBeenCalled();
   });
 
   it("performs action if button is initialized", function() {
     spyOn(buttonAction, "act");
-    inputId  = "attendees";
-    outputId = "results";
-    buttonWrapper.initialize(inputId, outputId);
+    buttonWrapper.bindEvents("inputId", "outputId");
     button.click();
-  	expect(buttonAction.act).toHaveBeenCalledTimes(1);
+    expect(buttonAction.act).toHaveBeenCalledTimes(1);
+    expect(buttonAction.act).toHaveBeenCalledWith("inputId", "outputId" );
   });
 });

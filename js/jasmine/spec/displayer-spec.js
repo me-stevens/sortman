@@ -1,6 +1,5 @@
 describe("Displayer", function() {
   var tbody;
-  var numberOfGroups;
   var displayer;
 
   var createTBody = function() {
@@ -14,8 +13,8 @@ describe("Displayer", function() {
   };
 
   beforeEach(function() {
-    numberOfGroups = 4;
-    displayer      = new Displayer(numberOfGroups);
+    var numberOfGroups = 4;
+    displayer = new Displayer(numberOfGroups);
   });
 
   it("prepares attendees structure for view in a table", function() {
@@ -24,7 +23,7 @@ describe("Displayer", function() {
     expect(displayer.prepareForView(attendees)).toEqual(prepared);
   });
 
-  it("generates content wrapped by tags", function() {
+  it("builds a tag with content inside", function() {
     tagName = "p";
     content = "content";
     expect(displayer.buildTag(tagName, content)).toEqual("<p>content</p>");
@@ -56,12 +55,13 @@ describe("Displayer", function() {
     expect(displayer.createRowsWith(sorted)).toEqual(rows);
   });
 
-  it("injects the attendees in a table", function() {
+  it("injects the sorted attendees in a table", function() {
     createTBody();
 
     var sorted = [["Jon Doe", "Jane Doe", "Doe Jon", "Doe Jane"], ["Number Five"]];
     displayer.injectDataInTable("results", sorted);
     expect(tbody.querySelectorAll("tr").length).toEqual(2);
+    expect(tbody.querySelector("td:nth-of-type(1)").innerHTML).toEqual("Jon Doe");
 
     removeTBody();
   });
