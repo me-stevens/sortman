@@ -1,6 +1,7 @@
 describe("Splitter", function() {
   var splitter;
   var textarea;
+  var numberOfGroups;
 
   var createTextArea = function() {
     textarea = document.createElement("textarea");
@@ -14,7 +15,8 @@ describe("Splitter", function() {
   };
 
   beforeEach(function() {
-    splitter = new Splitter();
+    numberOfGroups = 4;
+    splitter       = new Splitter(numberOfGroups);
   });
 
   it("should take a textarea and return its contents", function() {

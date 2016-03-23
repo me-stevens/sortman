@@ -1,5 +1,5 @@
-function Splitter() {
-  this.numberOfGroups = 4;
+function Splitter(numberOfGroups) {
+  this.numberOfGroups = numberOfGroups;
 
   this.getContentsFrom = function(textareaId) {
     var textarea = document.getElementById(textareaId);
