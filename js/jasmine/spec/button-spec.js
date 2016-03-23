@@ -1,6 +1,7 @@
 describe("Button", function() {
   var button;
   var splitter;
+  var displayer;
   var buttonWrapper;
 
   var createButton = function() {
@@ -13,10 +14,22 @@ describe("Button", function() {
     document.body.removeChild(button);
   };
 
+  var createTextArea = function() {
+    textarea = document.createElement("textarea");
+    textarea.setAttribute("id", "attendees");
+    textarea.value = "Jon Doe\nJane Doe";
+    document.body.appendChild(textarea);
+  };
+
+  var removeTextArea = function() {
+    document.body.removeChild(textarea);
+  };
+
   beforeEach(function() {
     createButton();
     splitter      = new Splitter();
-    buttonWrapper = new Button("split", splitter);
+    displayer     = new Displayer();
+    buttonWrapper = new Button("split", splitter, displayer);
   });
 
   afterEach(function() {
@@ -30,11 +43,29 @@ describe("Button", function() {
   });
 
   it("splits attendees if button is initialized", function() {
-    textareaId = "attendees";
-    buttonWrapper.initialize(textareaId);
+    inputId  = "attendees";
+    outputId = "results";
+    buttonWrapper.initialize(inputId, outputId);
     spyOn(splitter, "splitInGroups");
     button.click();
   	expect(splitter.splitInGroups).toHaveBeenCalledTimes(1);
-  	expect(splitter.splitInGroups).toHaveBeenCalledWith(textareaId);
+  	expect(splitter.splitInGroups).toHaveBeenCalledWith(inputId);
+  });
+
+  it("doesn't display attendees if button is not initialized", function() {
+    spyOn(displayer, "injectDataInTable");
+    button.click();
+  	expect(displayer.injectDataInTable).not.toHaveBeenCalled();
+  });
+
+  it("displays attendees if button is initialized", function() {
+    createTextArea();
+    inputId  = "attendees";
+    outputId = "results";
+    buttonWrapper.initialize(inputId, outputId);
+    spyOn(displayer, "injectDataInTable");
+    button.click();
+  	expect(displayer.injectDataInTable).toHaveBeenCalledTimes(1);
+    removeTextArea();
   });
 });

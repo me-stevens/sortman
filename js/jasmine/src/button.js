@@ -1,10 +1,12 @@
-function Button(buttonId, splitter) {
-  this.button   = document.getElementById(buttonId);
-  this.splitter = splitter;
+function Button(buttonId, splitter, displayer) {
+  this.button    = document.getElementById(buttonId);
+  this.splitter  = splitter;
+  this.displayer = displayer;
 
-  this.initialize = function(textareaId) {
+  this.initialize = function(inputId, outputId) {
+    var that = this;
     this.button.addEventListener("click", function() {
-    	console.log(splitter.splitInGroups(textareaId));
+    	that.displayer.injectDataInTable(outputId, that.splitter.splitInGroups(inputId));
     }, false);
   };
 }
