@@ -1,7 +1,6 @@
 describe("Button", function() {
   var button;
-  var splitter;
-  var displayer;
+  var buttonAction;
   var buttonWrapper;
 
   var createButton = function() {
@@ -14,58 +13,29 @@ describe("Button", function() {
     document.body.removeChild(button);
   };
 
-  var createTextArea = function() {
-    textarea = document.createElement("textarea");
-    textarea.setAttribute("id", "attendees");
-    textarea.value = "Jon Doe\nJane Doe";
-    document.body.appendChild(textarea);
-  };
-
-  var removeTextArea = function() {
-    document.body.removeChild(textarea);
-  };
-
   beforeEach(function() {
     createButton();
-    splitter      = new Splitter();
-    displayer     = new Displayer();
-    buttonWrapper = new Button("split", splitter, displayer);
+    var numberOfGroups = 4;
+    buttonAction       = new ButtonAction(new Splitter(numberOfGroups), new Displayer(numberOfGroups));
+    buttonWrapper      = new Button("split", buttonAction);
   });
 
   afterEach(function() {
     removeButton();
   });
 
-  it("doesn't split attendees if button is not initialized", function() {
-    spyOn(splitter, "splitInGroups");
+  it("doesn't do anything if button is not initialized", function() {
+    spyOn(buttonAction, "act");
     button.click();
-  	expect(splitter.splitInGroups).not.toHaveBeenCalled();
+  	expect(buttonAction.act).not.toHaveBeenCalled();
   });
 
-  it("splits attendees if button is initialized", function() {
+  it("performs action if button is initialized", function() {
+    spyOn(buttonAction, "act");
     inputId  = "attendees";
     outputId = "results";
     buttonWrapper.initialize(inputId, outputId);
-    spyOn(splitter, "splitInGroups");
     button.click();
-  	expect(splitter.splitInGroups).toHaveBeenCalledTimes(1);
-  	expect(splitter.splitInGroups).toHaveBeenCalledWith(inputId);
-  });
-
-  it("doesn't display attendees if button is not initialized", function() {
-    spyOn(displayer, "injectDataInTable");
-    button.click();
-  	expect(displayer.injectDataInTable).not.toHaveBeenCalled();
-  });
-
-  it("displays attendees if button is initialized", function() {
-    createTextArea();
-    inputId  = "attendees";
-    outputId = "results";
-    buttonWrapper.initialize(inputId, outputId);
-    spyOn(displayer, "injectDataInTable");
-    button.click();
-  	expect(displayer.injectDataInTable).toHaveBeenCalledTimes(1);
-    removeTextArea();
+  	expect(buttonAction.act).toHaveBeenCalledTimes(1);
   });
 });

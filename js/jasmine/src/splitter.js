@@ -7,7 +7,7 @@ function Splitter(numberOfGroups) {
   };
 
   this.getAttendees = function(userInput) {
-    return String.split(userInput, "\n");
+    return userInput.split("\n");
   };
 
   this.sort = function(attendees) {
