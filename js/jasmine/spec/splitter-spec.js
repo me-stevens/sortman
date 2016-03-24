@@ -24,6 +24,18 @@ describe("Splitter", function() {
     removeTextArea();
   });
 
+  it("should escape empty lines", function() {
+    var userInput    = "Jon Doe\nJane Doe\n\n";
+    var escapedInput = "Jon Doe\nJane Doe\n";
+    expect(splitter.escape(userInput)).toEqual(escapedInput);
+  });
+
+  it("should escape lines with only white space", function() {
+    var userInput    = "Jon Doe\nJane Doe\n   \n\t\n";
+    var escapedInput = "Jon Doe\nJane Doe\n";
+    expect(splitter.escape(userInput)).toEqual(escapedInput);
+  });
+
   it("should split the contents by line", function() {
     var userInput  = "Jon Doe\nJane Doe";
     var splitInput = [ "Jon Doe", "Jane Doe" ];

@@ -6,8 +6,12 @@ function Splitter(numberOfGroups) {
     return textarea.value;
   };
 
+  this.escape = function(userInput) {
+    return userInput.replace(/^\s*$[\n\r]{1,}/gm, '');
+  };
+
   this.getAttendees = function(userInput) {
-    return userInput.split("\n");
+    return this.escape(userInput).split("\n");
   };
 
   this.sort = function(attendees) {
